@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.dark {
+    /* @apply bg-slate-800 text-zinc-50; */
+    background-color: #111010;
+    color: #f7fafc;
+  }
+
+  .dark-text {
+    color: #000000;
+  }
