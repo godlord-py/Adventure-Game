@@ -1,9 +1,12 @@
 import React from "react";
 import { FaGithub } from "react-icons/fa";
 import { BiLogoGmail } from "react-icons/bi";
+import "/home/godlord/Deadliftwebapp/deadliftwebapp/src/styles/footer.css";
+
+
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-8">
+    <footer className="footer bg-gray-900 text-white py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:justify-between">
           <div className="w-full md:w-1/3 mb-8 md:mb-0">
@@ -18,7 +21,7 @@ function Footer() {
           </div>
           <div className="w-full md:w-1/3">
             <h3 className="text-xl font-bold mb-4">Developed by</h3>
-            <p className="text-sm flex items-center">
+            <p className="text-sm items-center">
               Aayush Pathak
               <a href="https://github.com/godlord-py/" className="ml-1 text-blue-300" target="_blank" rel="noopener noreferrer">
                 <FaGithub className="inline-block mb-1 ml-1" />

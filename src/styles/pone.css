@@ -1,32 +1,32 @@
 
 .dark .blur {
     position: absolute;
-    width: 50vw;
-    height: 50vw;
+    width: 20vw;
+    height: 20vw;
     min-width: 350px;
     min-width: 350px;
-    top: -28px;
-    left: 24vw;
+    top: -400px;
+    left: 29vw;
     border-radius: 764px;
     background: rgba(27, 24, 84, 0.7);
     filter: blur(100px);
-    z-index: 0;
-    animation: blurAnimation 3s ease-in-out infinite; 
+    z-index: -1;
+    animation: blurAnimation 4s infinite;
   }
 
   .blur {
     position: absolute;
-    width: 50vw;
-    height: 50vw;
+    width: 20vw;
+    height: 20vw;
     min-width: 350px;
     min-width: 350px;
-    top: -28px;
-    left: 24vw;
+    top: -400px;
+    left: 29vw;
     border-radius: 764px;
-    background: rgba(85, 255, 153, 0.7);
+    background: rgba(233, 228, 255, 0.7);
     filter: blur(100px);
-    z-index: 0;
-    animation: blurAnimationlight 3s ease-in-out infinite;
+    z-index: -1;
+    animation: blurAnimationlight 4s infinite;
   }
 
 
@@ -71,4 +71,8 @@
 
 .blur-animation {
     animation: blur 4s infinite;
+}
+
+.buttonm {
+    margin-left: 366px;
 }
