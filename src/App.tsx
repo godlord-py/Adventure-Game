@@ -10,7 +10,6 @@ const AdventureGame = () => {
   const [location, setLocation] = useState("Unknown");
   const messagesEndRef = useRef(null);
 
-  // Scroll to bottom whenever messages change
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -18,15 +17,12 @@ const AdventureGame = () => {
   }, [messages]);
 
   useEffect(() => {
-    // Start a new game session on load with loading animation
     setIsLoading(true);
     fetch("http://localhost:8000/new_session/")
       .then((res) => res.json())
       .then((data) => {
         setSessionId(data.session_id);
-        // Parse the response to extract potential metadata about health/inventory/location
         setMessages([{ text: data.response, type: "game" }]);
-        // Example parsing - your API would need to support this
         if (data.metadata) {
           if (data.metadata.health !== undefined) setHealth(data.metadata.health);
           if (data.metadata.healthChange !== undefined) {
@@ -50,7 +46,7 @@ const AdventureGame = () => {
   const sendCommand = async (command = input) => {
     if (!command.trim() || !sessionId) return;
   
-    setMessages(prev => [...prev, { text: command, type: "user" }]); // ✅ Correct input
+    setMessages(prev => [...prev, { text: command, type: "user" }]); 
     setInput("");  
     setIsLoading(true);
   
@@ -58,14 +54,14 @@ const AdventureGame = () => {
       const response = await fetch(`http://localhost:8000/play/?session_id=${sessionId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ command }), // ✅ Use correct command
+        body: JSON.stringify({ command }), 
       });
   
       const data = await response.json();
       console.log("API Response:", data);
       setHealth(data.health)
   
-      // ✅ Add game response only after fetching data
+
       setMessages(prev => [...prev, { text: data.response, type: "game" }]);
   
       // ✅ Update health, inventory, location if available
@@ -108,7 +104,7 @@ const AdventureGame = () => {
       // Apply highlighting
       let highlightedText = text;
       
-      // Find special sequences for damage/healing numbers and other game effects
+    
       highlightedText = highlightedText
       .replace(/(-\d+)\s+(damage|hp)/gi, '<span class="text-red-500 font-bold text-lg animate-pulse">$1 $2</span>')
       .replace(/(\+\d+)\s+(health|hp)/gi, '<span class="text-green-500 font-bold text-lg animate-pulse">$1 $2</span>')
