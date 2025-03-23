@@ -10,7 +10,7 @@ app = FastAPI()
 # Allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5173"],  # Adjust if needed
+    allow_origins=["http://127.0.0.1:5173", "https://67e00b1bfa57693ffb1a10ec--magical-squirrel-c50b5b.netlify.app"],  # Adjust if needed
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
