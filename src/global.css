@@ -4,6 +4,7 @@ body {
       padding: 0;
       height: screen; 
       overflow-x: hidden;
+      width: 100%;
       /* CSS */
   .background {
     background: linear-gradient(to right, #ff0000, #00ff00, #0000ff); /* Mix of red, green, and blue */
