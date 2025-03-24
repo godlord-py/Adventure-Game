@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-
 const AdventureGame = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -15,7 +14,6 @@ const AdventureGame = () => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
   useEffect(() => {
     setIsLoading(true);
     fetch("http://localhost:8000/new_session/")
@@ -37,19 +35,16 @@ const AdventureGame = () => {
         setIsLoading(false);
       });
   }, []);
-
   const handleOptionClick = (option) => {
     setInput(option.text);  
     sendCommand(option.text);  
   };
-  
+
   const sendCommand = async (command = input) => {
     if (!command.trim() || !sessionId) return;
-  
     setMessages(prev => [...prev, { text: command, type: "user" }]); 
     setInput("");  
     setIsLoading(true);
-  
     try {
       const response = await fetch(`http://localhost:8000/play/?session_id=${sessionId}`, {
         method: "POST",
@@ -60,11 +55,7 @@ const AdventureGame = () => {
       const data = await response.json();
       console.log("API Response:", data);
       setHealth(data.health)
-  
-
       setMessages(prev => [...prev, { text: data.response, type: "game" }]);
-  
-      // ✅ Update health, inventory, location if available
       if (data.metadata) {
         if (data.metadata.health !== undefined) setHealth(data.metadata.health);
         if (data.metadata.inventory) setInventory(data.metadata.inventory);
@@ -77,18 +68,13 @@ const AdventureGame = () => {
       setIsLoading(false);
     }
   };
-  
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       sendCommand();
     }
   };
-
-  // Function to render message with formatting and effects
   const renderMessage = (message) => {
-    // Helper function to wrap specific keywords with styling
     const highlightKeywords = (text) => {
-      // Define keywords to highlight with their corresponding styles
       const keywords = [
         { regex: /\b(sword|blade|dagger|axe|bow|arrow|staff|wand|shield|armor)\b/gi, class: "text-yellow-300 font-semibold" },
         { regex: /\b(gold|silver|coin|treasure|gem|ruby|emerald|diamond|jewel)\b/gi, class: "text-yellow-400 font-semibold" },
@@ -100,11 +86,7 @@ const AdventureGame = () => {
         { regex: /"([^"]*)"/g, class: "italic text-gray-200" }, // Quoted text
         { regex: /\*([^*]*)\*/g, class: "text-yellow-200 font-bold" }, // *emphasized* text
       ];
-
-      // Apply highlighting
       let highlightedText = text;
-      
-    
       highlightedText = highlightedText
       .replace(/(-\d+)\s+(damage|hp)/gi, '<span class="text-red-500 font-bold text-lg animate-pulse">$1 $2</span>')
       .replace(/(\+\d+)\s+(health|hp)/gi, '<span class="text-green-500 font-bold text-lg animate-pulse">$1 $2</span>')
@@ -125,7 +107,6 @@ const AdventureGame = () => {
           return `<span class="${className}">${match}</span>`;
         });
       });
-    
       return <div dangerouslySetInnerHTML={{ __html: highlightedText }} />;
     };
 
@@ -135,21 +116,17 @@ const AdventureGame = () => {
       if (text.toLowerCase().includes('attack') || text.toLowerCase().includes('damage')) {
         return <div className="border-l-4 border-red-600 pl-2 my-2 bg-red-900/20 py-1 rounded-r">{highlightKeywords(text)}</div>;
       }
-      
       // Check for discovery events
       if (text.toLowerCase().includes('found') || text.toLowerCase().includes('discover')) {
         return <div className="border-l-4 border-yellow-600 pl-2 my-2 bg-yellow-900/20 py-1 rounded-r">{highlightKeywords(text)}</div>;
       }
-      
       // Check for location change
       if (text.toLowerCase().includes('enter') || text.toLowerCase().includes('arrived')) {
         return <div className="border-l-4 border-blue-600 pl-2 my-2 bg-blue-900/20 py-1 rounded-r">{highlightKeywords(text)}</div>;
       }
-      
       // Default case - still nicely formatted
       return highlightKeywords(text);
     };
-
     // Split text into paragraphs for better formatting
     const formatGameText = (text) => {
       const paragraphs = text.split(/\n+/);
@@ -217,21 +194,16 @@ const AdventureGame = () => {
       </div>
     );
   };
-
   return (
     <div className="min-h-screen w-full bg-black text-white flex flex-col bg-[url('/api/placeholder/1200/800')] bg-cover bg-fixed bg-center relative">
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm"></div>
-      
-      {/* Game header */}
       <header className="relative z-10 border-b border-amber-800/50 bg-gradient-to-r from-gray-900/80 to-black/80 p-4 shadow-lg">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <h1 className="text-4xl font-bold text-amber-400 font-serif tracking-wider">⚔️ Realm of Adventures</h1>
           </div>
-          
           <div className="flex flex-wrap gap-6 items-center">
-            {/* Health bar with animation */}
             <div className="relative">
               <div className="text-red-400 text-sm font-bold mb-1">HEALTH</div>
               <div className="w-32 h-3 bg-gray-800 rounded-full border border-gray-700">
@@ -244,34 +216,24 @@ const AdventureGame = () => {
               </div>
               <div className="text-xs mt-1 text-center">{health}/100</div>
             </div>
-            
-            {/* Location with icon */}
             <div className="text-center px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-700">
               <div className="text-amber-400 text-sm font-bold flex items-center gap-1">
                 <span>📍</span> LOCATION
               </div>
               <div className="text-sm text-gray-200">{location}</div>
             </div>
-            
-            {/* Sound control */}
             <button className="text-gray-400 hover:text-amber-400 transition-colors p-2 rounded-full bg-gray-800/30 border border-gray-700/50">
               <span className="text-lg">🔊</span>
             </button>
           </div>
         </div>
       </header>
-      
-      {/* Main game area */}
       <main className="flex-grow relative z-10 px-4 py-6">
         <div className="max-w-7xl mx-auto h-full flex flex-col md:flex-row gap-6">
-          {/* Game content area */}
           <div className="flex-grow flex flex-col h-full">
-            {/* Game messages */}
             <div className="flex-grow h-[calc(100vh-280px)] overflow-y-auto p-6 bg-gray-900/80 rounded-lg border border-gray-700/50 shadow-inner font-mono text-sm custom-scrollbar relative bg-[url('/api/placeholder/200/200')] bg-repeat bg-opacity-5">
-              {/* Decorative fantasy elements */}
               <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-900/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-900/20 to-transparent"></div>
-            
               {messages.map((msg, index) => (
                 <div key={index} className="mb-4 last:mb-0">
                   {renderMessage(msg)}
@@ -289,8 +251,6 @@ const AdventureGame = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
-            
-            {/* Input area */}
             <div className="mt-4 relative">
               <input
                 type="text"
@@ -370,37 +330,6 @@ const AdventureGame = () => {
       <footer className="relative z-10 mt-auto border-t border-gray-800 bg-black/80 py-2 text-center text-xs text-gray-500">
         <p>Realm of Adventures © 2025 | Use arrow keys to navigate history | Type 'help' for commands</p>
       </footer>
-      
-      {/* Add some ambient animation effects */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-        
-        /* Custom scrollbar for a more themed look */
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.3);
-          border-radius: 10px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(180, 120, 40, 0.6);
-          border-radius: 10px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(220, 150, 50, 0.8);
-        }
-      `}</style>
     </div>
   );
 };
